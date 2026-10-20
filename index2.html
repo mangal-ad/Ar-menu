@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D AR Cafe Menu</title>
+  <!-- A-Frame and AR.js Libraries -->
+  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+  <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+    }
+    .instruction {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.75);
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      z-index: 999;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .menu-bar {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+      z-index: 999;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 10px;
+      border-radius: 25px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+    .menu-btn {
+      background: #ff5722;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 18px;
+      font-weight: bold;
+      font-size: 13px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      line-height: 1.2;
+    }
+    .menu-btn span.price {
+      font-size: 11px;
+      opacity: 0.9;
+      margin-top: 2px;
+      background: rgba(0,0,0,0.2);
+      padding: 2px 6px;
+      border-radius: 10px;
+    }
+    .menu-btn:active {
+      background: #e64a19;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="instruction">कैमरा टेबल की तरफ घुमाएं और डिश चुनें!</div>
+
+  <!-- Bottom Menu Buttons with Prices -->
+  <div class="menu-bar">
+    <button class="menu-btn" onclick="showModel('burger')">
+      🍔 Burger
+      <span class="price">₹99</span>
+    </button>
+    <button class="menu-btn" onclick="showModel('pizza')">
+      🍕 Pizza
+      <span class="price">₹399</span>
+    </button>
+    <button class="menu-btn" onclick="showModel('coffee')">
+      ☕ Cold Coffee
+      <span class="price">₹199</span>
+    </button>
+  </div>
+
+  <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
+    <a-assets>
+      <!-- 3D Models Assets -->
+      <a-asset-item id="burger-model" src="https://raw.githack.com/KhronosGroup/glTF-Sample-Models/master/2.0/Avocado/glTF-Binary/Avocado.glb"></a-asset-item>
+      <a-asset-item id="pizza-model" src="https://raw.githack.com/KhronosGroup/glTF-Sample-Models/master/2.0/Avocado/glTF-Binary/Avocado.glb"></a-asset-item>
+      <a-asset-item id="coffee-model" src="https://raw.githack.com/KhronosGroup/glTF-Sample-Models/master/2.0/Avocado/glTF-Binary/Avocado.glb"></a-asset-item>
+    </a-assets>
+
+    <!-- AR Entity to display selected item -->
+    <a-entity 
+      id="ar-display"
+      gltf-model="#burger-model" 
+      position="0 0 -1" 
+      scale="5 5 5" 
+      rotation="0 45 0"
+      animation="property: rotation; to: 0 405 0; loop: true; dur: 10000">
+    </a-entity>
+
+    <a-entity camera></a-entity>
+  </a-scene>
+
+  <script>
+    function showModel(type) {
+      var arDisplay = document.getElementById('ar-display');
+      if (type === 'burger') {
+        arDisplay.setAttribute('gltf-model', '#burger-model');
+        arDisplay.setAttribute('scale', '5 5 5');
+      } else if (type === 'pizza') {
+        arDisplay.setAttribute('gltf-model', '#pizza-model');
+        arDisplay.setAttribute('scale', '5 5 5');
+      } else if (type === 'coffee') {
+        arDisplay.setAttribute('gltf-model', '#coffee-model');
+        arDisplay.setAttribute('scale', '5 5 5');
+      }
+    }
+  </script>
+
+</body>
+</html>
